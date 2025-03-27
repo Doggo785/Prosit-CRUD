@@ -3,6 +3,10 @@
 $requestUri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
 switch ($requestUri) {
+    case '/':
+        require_once 'index.php';
+        break;
+
     case '/entreprises':
         require_once 'src/controllers/entrepriseController.php';
         break;
