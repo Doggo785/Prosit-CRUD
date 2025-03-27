@@ -24,7 +24,7 @@
                         <td><?= htmlspecialchars($offre['id']) ?></td>
                         <td><?= htmlspecialchars($offre['titre']) ?></td>
                         <td><?= htmlspecialchars($offre['description']) ?></td>
-                        <td><?= htmlspecialchars($offre['entreprise_id']) ?></td>
+                        <td><?= htmlspecialchars($offre['entreprise_nom']) ?></td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
