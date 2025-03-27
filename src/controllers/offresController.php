@@ -4,7 +4,7 @@ require_once 'src/config/database.php';
 // Fonction pour afficher la liste des offres de stage
 function afficherOffres($pdo) {
     $query = "
-        SELECT offres.id, offres.titre, offres.description, entreprises.nom AS entreprise_nom
+        SELECT offres.id, offres.titre, offres.description, entreprises.nom AS entreprise_nom, offres.entreprise_id
         FROM offres
         INNER JOIN entreprises ON offres.entreprise_id = entreprises.id
     ";
@@ -38,6 +38,17 @@ function ajouterOffre($pdo, $titre, $description, $entreprise_id) {
     $stmt->execute();
 }
 
+// Fonction pour modifier une offre de stage
+function modifierOffre($pdo, $id, $titre, $description, $entreprise_id) {
+    $query = "UPDATE offres SET titre = :titre, description = :description, entreprise_id = :entreprise_id WHERE id = :id";
+    $stmt = $pdo->prepare($query);
+    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+    $stmt->bindParam(':titre', $titre);
+    $stmt->bindParam(':description', $description);
+    $stmt->bindParam(':entreprise_id', $entreprise_id);
+    $stmt->execute();
+}
+
 // Fonction pour supprimer une offre de stage
 function supprimerOffre($pdo, $id) {
     $query = "DELETE FROM offres WHERE id = :id";
@@ -64,7 +75,25 @@ try {
                 ajouterOffre($pdo, $titre, $description, $entreprise_id);
                 header('Location: /offres?action=list');
             } else {
-                require 'src/views/offres.php'; // Ajouter un formulaire dans cette vue
+                require 'src/views/offres.php';
+            }
+            break;
+
+        case 'edit':
+            $id = $_GET['id'] ?? null;
+            if ($_SERVER['REQUEST_METHOD'] === 'POST' && $id) {
+                $titre = $_POST['titre'] ?? '';
+                $description = $_POST['description'] ?? '';
+                $entreprise_id = $_POST['entreprise_id'] ?? null;
+                modifierOffre($pdo, $id, $titre, $description, $entreprise_id);
+                header('Location: /offres?action=list');
+            } else {
+                $query = "SELECT * FROM offres WHERE id = :id";
+                $stmt = $pdo->prepare($query);
+                $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+                $stmt->execute();
+                $offre = $stmt->fetch(PDO::FETCH_ASSOC);
+                require 'src/views/offres.php';
             }
             break;
 

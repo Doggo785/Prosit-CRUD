@@ -20,6 +20,16 @@ function ajouterEntreprise($pdo, $nom, $adresse) {
     $stmt->execute();
 }
 
+// Fonction pour modifier une entreprise
+function modifierEntreprise($pdo, $id, $nom, $adresse) {
+    $query = "UPDATE entreprises SET nom = :nom, adresse = :adresse WHERE id = :id";
+    $stmt = $pdo->prepare($query);
+    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+    $stmt->bindParam(':nom', $nom);
+    $stmt->bindParam(':adresse', $adresse);
+    $stmt->execute();
+}
+
 // Fonction pour supprimer une entreprise
 function supprimerEntreprise($pdo, $id) {
     $query = "DELETE FROM entreprises WHERE id = :id";
@@ -43,7 +53,24 @@ switch ($action) {
             ajouterEntreprise($pdo, $nom, $adresse);
             header('Location: /entreprises?action=list');
         } else {
-            require 'src/views/entreprises.php'; // Ajouter un formulaire dans cette vue
+            require 'src/views/entreprises.php';
+        }
+        break;
+
+    case 'edit':
+        $id = $_GET['id'] ?? null;
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && $id) {
+            $nom = $_POST['nom'] ?? '';
+            $adresse = $_POST['adresse'] ?? '';
+            modifierEntreprise($pdo, $id, $nom, $adresse);
+            header('Location: /entreprises?action=list');
+        } else {
+            $query = "SELECT * FROM entreprises WHERE id = :id";
+            $stmt = $pdo->prepare($query);
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt->execute();
+            $entreprise = $stmt->fetch(PDO::FETCH_ASSOC);
+            require 'src/views/entreprises.php';
         }
         break;
 

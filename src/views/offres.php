@@ -27,6 +27,7 @@
                         <td><?= htmlspecialchars($offre['description']) ?></td>
                         <td><?= htmlspecialchars($offre['entreprise_nom']) ?></td>
                         <td>
+                            <a href="/offres?action=edit&id=<?= htmlspecialchars($offre['id']) ?>">Modifier</a>
                             <a href="/offres?action=delete&id=<?= htmlspecialchars($offre['id']) ?>" 
                                onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette offre ?');">
                                Supprimer
@@ -40,19 +41,36 @@
         <p>Aucune offre de stage trouvée.</p>
     <?php endif; ?>
 
-    <!-- Formulaire pour ajouter une nouvelle offre -->
-    <h2>Ajouter une offre de stage</h2>
-    <form action="/offres?action=add" method="POST">
-        <label for="titre">Titre :</label>
-        <input type="text" id="titre" name="titre" required>
-        <br>
-        <label for="description">Description :</label>
-        <textarea id="description" name="description" required></textarea>
-        <br>
-        <label for="entreprise_id">ID de l'entreprise :</label>
-        <input type="number" id="entreprise_id" name="entreprise_id" required>
-        <br>
-        <button type="submit">Ajouter</button>
-    </form>
+
+        <!-- Formulaire pour ajouter une offre -->
+        <h2>Ajouter une offre de stage</h2>
+        <form action="/offres?action=add" method="POST">
+            <label for="titre">Titre :</label>
+            <input type="text" id="titre" name="titre" required>
+            <br>
+            <label for="description">Description :</label>
+            <textarea id="description" name="description" required></textarea>
+            <br>
+            <label for="entreprise_id">ID de l'entreprise :</label>
+            <input type="number" id="entreprise_id" name="entreprise_id" required>
+            <br>
+            <button type="submit">Ajouter</button>
+        </form>
+
+        <!-- Formulaire pour modifier une offre -->
+        <h2>Modifier une offre de stage</h2>
+        <form action="/offres?action=edit&id=<?= htmlspecialchars($offre['id']) ?>" method="POST">
+            <label for="titre">Titre :</label>
+            <input type="text" id="titre" name="titre" value="<?= htmlspecialchars($offre['titre']) ?>" required>
+            <br>
+            <label for="description">Description :</label>
+            <textarea id="description" name="description" required><?= htmlspecialchars($offre['description']) ?></textarea>
+            <br>
+            <label for="entreprise_id">ID de l'entreprise :</label>
+            <input type="number" id="entreprise_id" name="entreprise_id" value="<?= htmlspecialchars($offre['entreprise_id']) ?>" required>
+            <br>
+            <button type="submit">Modifier</button>
+        </form>
+
 </body>
 </html>

@@ -25,6 +25,7 @@
                         <td><?= htmlspecialchars($entreprise['nom']) ?></td>
                         <td><?= htmlspecialchars($entreprise['adresse']) ?></td>
                         <td>
+                            <a href="/entreprises?action=edit&id=<?= htmlspecialchars($entreprise['id']) ?>">Modifier</a>
                             <a href="/entreprises?action=delete&id=<?= htmlspecialchars($entreprise['id']) ?>" 
                                onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette entreprise ?');">
                                Supprimer
@@ -38,7 +39,7 @@
         <p>Aucune entreprise trouvée.</p>
     <?php endif; ?>
 
-    <!-- Formulaire pour ajouter une nouvelle entreprise -->
+    <!-- Formulaire pour ajouter une entreprise -->
     <h2>Ajouter une entreprise</h2>
     <form action="/entreprises?action=add" method="POST">
         <label for="nom">Nom :</label>
@@ -49,5 +50,19 @@
         <br>
         <button type="submit">Ajouter</button>
     </form>
+
+    <!-- Formulaire pour modifier une entreprise -->
+    <?php if (isset($entreprise)): ?>
+        <h2>Modifier une entreprise</h2>
+        <form action="/entreprises?action=edit&id=<?= htmlspecialchars($entreprise['id']) ?>" method="POST">
+            <label for="nom">Nom :</label>
+            <input type="text" id="nom" name="nom" value="<?= htmlspecialchars($entreprise['nom']) ?>" required>
+            <br>
+            <label for="adresse">Adresse :</label>
+            <input type="text" id="adresse" name="adresse" value="<?= htmlspecialchars($entreprise['adresse']) ?>" required>
+            <br>
+            <button type="submit">Modifier</button>
+        </form>
+    <?php endif; ?>
 </body>
 </html>
