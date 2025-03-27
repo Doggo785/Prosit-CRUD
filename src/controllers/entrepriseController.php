@@ -20,6 +20,14 @@ function ajouterEntreprise($pdo, $nom, $adresse) {
     $stmt->execute();
 }
 
+// Fonction pour supprimer une entreprise
+function supprimerEntreprise($pdo, $id) {
+    $query = "DELETE FROM entreprises WHERE id = :id";
+    $stmt = $pdo->prepare($query);
+    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+    $stmt->execute();
+}
+
 // Gestion des actions
 $action = $_GET['action'] ?? 'list';
 
@@ -36,6 +44,17 @@ switch ($action) {
             header('Location: /entreprises?action=list');
         } else {
             require 'src/views/entreprises.php'; // Ajouter un formulaire dans cette vue
+        }
+        break;
+
+    case 'delete':
+        $id = $_GET['id'] ?? null;
+        if ($id) {
+            supprimerEntreprise($pdo, $id);
+            header('Location: /entreprises?action=list');
+        } else {
+            http_response_code(400);
+            echo "ID manquant pour la suppression.";
         }
         break;
 

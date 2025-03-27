@@ -38,6 +38,14 @@ function ajouterOffre($pdo, $titre, $description, $entreprise_id) {
     $stmt->execute();
 }
 
+// Fonction pour supprimer une offre de stage
+function supprimerOffre($pdo, $id) {
+    $query = "DELETE FROM offres WHERE id = :id";
+    $stmt = $pdo->prepare($query);
+    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+    $stmt->execute();
+}
+
 // Gestion des actions
 $action = $_GET['action'] ?? 'list';
 
@@ -57,6 +65,17 @@ try {
                 header('Location: /offres?action=list');
             } else {
                 require 'src/views/offres.php'; // Ajouter un formulaire dans cette vue
+            }
+            break;
+
+        case 'delete':
+            $id = $_GET['id'] ?? null;
+            if ($id) {
+                supprimerOffre($pdo, $id);
+                header('Location: /offres?action=list');
+            } else {
+                http_response_code(400);
+                echo "ID manquant pour la suppression.";
             }
             break;
 

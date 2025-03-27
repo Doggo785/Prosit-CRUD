@@ -16,6 +16,7 @@
                     <th>Titre</th>
                     <th>Description</th>
                     <th>Entreprise</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -25,6 +26,12 @@
                         <td><?= htmlspecialchars($offre['titre']) ?></td>
                         <td><?= htmlspecialchars($offre['description']) ?></td>
                         <td><?= htmlspecialchars($offre['entreprise_nom']) ?></td>
+                        <td>
+                            <a href="/offres?action=delete&id=<?= htmlspecialchars($offre['id']) ?>" 
+                               onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette offre ?');">
+                               Supprimer
+                            </a>
+                        </td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>

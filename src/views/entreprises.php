@@ -15,6 +15,7 @@
                     <th>ID</th>
                     <th>Nom</th>
                     <th>Adresse</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -23,6 +24,12 @@
                         <td><?= htmlspecialchars($entreprise['id']) ?></td>
                         <td><?= htmlspecialchars($entreprise['nom']) ?></td>
                         <td><?= htmlspecialchars($entreprise['adresse']) ?></td>
+                        <td>
+                            <a href="/entreprises?action=delete&id=<?= htmlspecialchars($entreprise['id']) ?>" 
+                               onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette entreprise ?');">
+                               Supprimer
+                            </a>
+                        </td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
